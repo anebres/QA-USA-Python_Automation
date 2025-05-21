@@ -1,6 +1,7 @@
 
 # Import modules
 import data
+import pages
 # import helpers
 from helpers import is_url_reachable, retrieve_phone_code
 import time
@@ -8,7 +9,6 @@ from selenium import webdriver
 from pages import UrbanRoutesPage
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.common.by import By
 
 class TestUrbanRoutes:
     @classmethod
@@ -18,6 +18,8 @@ class TestUrbanRoutes:
         capabilities = DesiredCapabilities.CHROME
         capabilities["goog:loggingPrefs"] = {'performance': 'ALL'}
         cls.driver = webdriver.Chrome()
+
+        cls.driver.implicitly_wait(5)
 
         if is_url_reachable(data.URBAN_ROUTES_URL):
             print('Connected to the Urban Routes server')
@@ -43,10 +45,10 @@ class TestUrbanRoutes:
         self.driver.get(data.URBAN_ROUTES_URL)
         urban_routes_page = UrbanRoutesPage(self.driver)
         urban_routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
-        WebDriverWait(self.driver, 3).until(expected_conditions.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Call a taxi")]')))
+        WebDriverWait(self.driver, 3).until(expected_conditions.element_to_be_clickable(pages.UrbanRoutesPage.CALL_TAXI_ICON_LOCATOR))
         urban_routes_page.click_call_taxi_icon()
         WebDriverWait(self.driver, 3).until(
-            expected_conditions.element_to_be_clickable((By.XPATH, '//div[@class="tcard-icon"]//img[@src="/static/media/kids.27f92282.svg"]/ancestor::div[contains(@class, "tcard")]')))
+            expected_conditions.element_to_be_clickable(pages.UrbanRoutesPage.SUPPORTIVE_ICON_LOCATOR))
         urban_routes_page.click_supportive_icon()
 
         # Assert that the supportive plan is now active
@@ -59,11 +61,10 @@ class TestUrbanRoutes:
         urban_routes_page = UrbanRoutesPage(self.driver)
         urban_routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
         WebDriverWait(self.driver, 3).until(
-            expected_conditions.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Call a taxi")]')))
+            expected_conditions.element_to_be_clickable(pages.UrbanRoutesPage.CALL_TAXI_ICON_LOCATOR))
         urban_routes_page.click_call_taxi_icon()
         WebDriverWait(self.driver, 3).until(
-            expected_conditions.element_to_be_clickable((By.XPATH,
-                                                         '//div[@class="tcard-icon"]//img[@src="/static/media/kids.27f92282.svg"]/ancestor::div[contains(@class, "tcard")]')))
+            expected_conditions.element_to_be_clickable(pages.UrbanRoutesPage.SUPPORTIVE_ICON_LOCATOR))
         urban_routes_page.click_supportive_icon()
         urban_routes_page.enter_phone_number(data.PHONE_NUMBER)
         sms_code = retrieve_phone_code(self.driver)
@@ -78,11 +79,10 @@ class TestUrbanRoutes:
         urban_routes_page = UrbanRoutesPage(self.driver)
         urban_routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
         WebDriverWait(self.driver, 3).until(
-            expected_conditions.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Call a taxi")]')))
+            expected_conditions.element_to_be_clickable(pages.UrbanRoutesPage.CALL_TAXI_ICON_LOCATOR))
         urban_routes_page.click_call_taxi_icon()
         WebDriverWait(self.driver, 3).until(
-            expected_conditions.element_to_be_clickable((By.XPATH,
-                                                         '//div[@class="tcard-icon"]//img[@src="/static/media/kids.27f92282.svg"]/ancestor::div[contains(@class, "tcard")]')))
+            expected_conditions.element_to_be_clickable(pages.UrbanRoutesPage.SUPPORTIVE_ICON_LOCATOR))
         urban_routes_page.click_supportive_icon()
         urban_routes_page.adding_new_card(data.CARD_NUMBER, data.CARD_CODE)
 
@@ -100,11 +100,10 @@ class TestUrbanRoutes:
         urban_routes_page = UrbanRoutesPage(self.driver)
         urban_routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
         WebDriverWait(self.driver, 3).until(
-            expected_conditions.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Call a taxi")]')))
+            expected_conditions.element_to_be_clickable(pages.UrbanRoutesPage.CALL_TAXI_ICON_LOCATOR))
         urban_routes_page.click_call_taxi_icon()
         WebDriverWait(self.driver, 3).until(
-            expected_conditions.element_to_be_clickable((By.XPATH,
-                                                         '//div[@class="tcard-icon"]//img[@src="/static/media/kids.27f92282.svg"]/ancestor::div[contains(@class, "tcard")]')))
+            expected_conditions.element_to_be_clickable(pages.UrbanRoutesPage.SUPPORTIVE_ICON_LOCATOR))
         urban_routes_page.click_supportive_icon()
         urban_routes_page.message_driver(data.MESSAGE_FOR_DRIVER)
 
@@ -118,11 +117,10 @@ class TestUrbanRoutes:
         urban_routes_page = UrbanRoutesPage(self.driver)
         urban_routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
         WebDriverWait(self.driver, 3).until(
-            expected_conditions.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Call a taxi")]')))
+            expected_conditions.element_to_be_clickable(pages.UrbanRoutesPage.CALL_TAXI_ICON_LOCATOR))
         urban_routes_page.click_call_taxi_icon()
         WebDriverWait(self.driver, 3).until(
-            expected_conditions.element_to_be_clickable((By.XPATH,
-                                                         '//div[@class="tcard-icon"]//img[@src="/static/media/kids.27f92282.svg"]/ancestor::div[contains(@class, "tcard")]')))
+            expected_conditions.element_to_be_clickable(pages.UrbanRoutesPage.SUPPORTIVE_ICON_LOCATOR))
         urban_routes_page.click_supportive_icon()
         urban_routes_page.blanket_handkerchiefs()
         time.sleep(0.5)
@@ -142,11 +140,10 @@ class TestUrbanRoutes:
         urban_routes_page = UrbanRoutesPage(self.driver)
         urban_routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
         WebDriverWait(self.driver, 3).until(
-            expected_conditions.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Call a taxi")]')))
+            expected_conditions.element_to_be_clickable(pages.UrbanRoutesPage.CALL_TAXI_ICON_LOCATOR))
         urban_routes_page.click_call_taxi_icon()
         WebDriverWait(self.driver, 3).until(
-            expected_conditions.element_to_be_clickable((By.XPATH,
-                                                         '//div[@class="tcard-icon"]//img[@src="/static/media/kids.27f92282.svg"]/ancestor::div[contains(@class, "tcard")]')))
+            expected_conditions.element_to_be_clickable(pages.UrbanRoutesPage.SUPPORTIVE_ICON_LOCATOR))
         urban_routes_page.click_supportive_icon()
         urban_routes_page.add_ice_cream()
 
@@ -160,11 +157,10 @@ class TestUrbanRoutes:
         urban_routes_page = UrbanRoutesPage(self.driver)
         urban_routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
         WebDriverWait(self.driver, 3).until(
-            expected_conditions.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Call a taxi")]')))
+            expected_conditions.element_to_be_clickable(pages.UrbanRoutesPage.CALL_TAXI_ICON_LOCATOR))
         urban_routes_page.click_call_taxi_icon()
         WebDriverWait(self.driver, 3).until(
-            expected_conditions.element_to_be_clickable((By.XPATH,
-                                                         '//div[@class="tcard-icon"]//img[@src="/static/media/kids.27f92282.svg"]/ancestor::div[contains(@class, "tcard")]')))
+            expected_conditions.element_to_be_clickable(pages.UrbanRoutesPage.SUPPORTIVE_ICON_LOCATOR))
         urban_routes_page.click_supportive_icon()
         urban_routes_page.enter_phone_number(data.PHONE_NUMBER)
         sms_code = retrieve_phone_code(self.driver)
